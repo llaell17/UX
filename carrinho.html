@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrinho | Pixel Forge</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* --- VARIÁVEIS E RESET --- */
+    :root {
+        --primary: #ff002b;
+        --primary-dark: #b3001e;
+        --bg-dark: #0f0f11;
+        --bg-card: #18181b;
+        --text-light: #f4f4f5;
+        --text-gray: #a1a1aa;
+        --glass: rgba(255, 255, 255, 0.05);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* --- HEADER --- */
+    header {
+        background: rgba(15, 15, 17, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .brand {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #fff;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .brand span { color: var(--primary); }
+
+    nav { display: flex; gap: 30px; align-items: center; }
+    nav a {
+        color: var(--text-gray);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    /* --- LAYOUT DO CARRINHO --- */
+    .container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 40px auto;
+        padding: 0 20px;
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: 2fr 1fr; /* Esquerda maior, direita menor */
+        gap: 40px;
+    }
+
+    h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 28px;
+        margin-bottom: 20px;
+        grid-column: 1 / -1;
+    }
+
+    /* --- LISTA DE ITENS --- */
+    .cart-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .cart-item {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: 0.3s;
+    }
+
+    .cart-item:hover { border-color: var(--primary); }
+
+    .item-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .item-icon {
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: var(--primary);
+    }
+
+    .item-details h4 { font-size: 16px; margin-bottom: 5px; }
+    .item-details p { color: var(--primary); font-weight: bold; }
+
+    .btn-remove {
+        background: transparent;
+        border: none;
+        color: #666;
+        cursor: pointer;
+        font-size: 18px;
+        transition: 0.3s;
+        padding: 10px;
+    }
+    .btn-remove:hover { color: var(--primary); }
+
+    /* --- RESUMO DO PEDIDO (Direita) --- */
+    .order-summary {
+        background: var(--bg-card);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 30px;
+        height: fit-content;
+        position: sticky;
+        top: 100px;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 14px;
+        color: var(--text-gray);
+    }
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 20px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .btn-checkout {
+        background: var(--primary);
+        color: #fff;
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 25px;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .btn-checkout:hover { background: #d40000; box-shadow: 0 0 15px rgba(255, 0, 43, 0.4); }
+
+    .btn-clear {
+        background: transparent;
+        color: var(--text-gray);
+        border: 1px solid #333;
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 12px;
+        transition: 0.3s;
+    }
+    .btn-clear:hover { border-color: #666; color: #fff; }
+
+    /* --- EMPTY STATE --- */
+    .empty-cart {
+        text-align: center;
+        padding: 50px;
+        color: var(--text-gray);
+    }
+    .empty-cart i { font-size: 50px; margin-bottom: 20px; opacity: 0.3; }
+    .btn-back {
+        display: inline-block;
+        margin-top: 20px;
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    /* Footer */
+    footer {
+        text-align: center;
+        padding: 30px;
+        background: #0a0a0c;
+        border-top: 1px solid #222;
+        color: #555;
+        font-size: 14px;
+        margin-top: auto;
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+        .container { grid-template-columns: 1fr; }
+        .order-summary { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+        <i class="fa-solid fa-microchip"></i> Pixel<span>Forge</span>
+    </div>
+    <nav>
+      <a href="index.html">Voltar para Loja</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Seu Carrinho</h2>
+
+    <div class="cart-list" id="listaCarrinho">
+       </div>
+
+    <div class="order-summary">
+        <h3>Resumo do Pedido</h3>
+        <div style="margin-top: 20px;">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotal">R$ 0,00</span>
+            </div>
+            <div class="summary-row">
+                <span>Frete (Sedex)</span>
+                <span>Grátis</span>
+            </div>
+            <div class="summary-total">
+                <span>Total</span>
+                <span id="total" style="color: var(--primary);">R$ 0,00</span>
+            </div>
+        </div>
+        
+        <a href="checkout.html" style="text-decoration: none;">
+            <button class="btn-checkout">
+                Finalizar Compra <i class="fa-solid fa-arrow-right" style="margin-left: 10px;"></i>
+            </button>
+        </a>
+        
+        <button class="btn-clear" onclick="limparCarrinho()">Esvaziar Carrinho</button>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2024 Pixel Forge Hardware. Projeto de UX Design.
+  </footer>
+
+  <script>
+    // LISTA DE PREÇOS ATUALIZADA (Corrigido para bater com o Index e incluir a PX 9090)
+    const precos = {
+      "PX 9090 Devil Gaming": 12500,  // CORRIGIDO: Agora tem preço!
+      "RX 7900 XT Edition": 2499,     // Atualizado conforme Loja
+      "RTX 4080 Super OC": 3270,      // Atualizado conforme Loja
+      "GTX 1660 Super": 1450,
+      "RTX 4070 Ti Elite": 4290,      // Atualizado conforme Loja
+      "RTX 3060 12GB": 1899,
+      "RX 7700 XT Gaming": 7150       // Atualizado conforme Loja
+    };
+
+    function carregarCarrinho() {
+      let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+      const lista = document.getElementById('listaCarrinho');
+      const subtotalElem = document.getElementById('subtotal');
+      const totalElem = document.getElementById('total');
+      
+      lista.innerHTML = '';
+      let total = 0;
+
+      // Estado Vazio
+      if (carrinho.length === 0) {
+        lista.innerHTML = `
+            <div class="empty-cart">
+                <i class="fa-solid fa-cart-arrow-down"></i>
+                <p>Seu carrinho está vazio.</p>
+                <a href="index.html" class="btn-back">Explorar Loja</a>
+            </div>
+        `;
+        subtotalElem.innerText = "R$ 0,00";
+        totalElem.innerText = "R$ 0,00";
+        return;
+      }
+
+      // Renderizar Itens
+      carrinho.forEach((item, index) => {
+        const preco = precos[item] || 0; 
+        total += preco;
+
+        const htmlItem = `
+            <div class="cart-item">
+                <div class="item-info">
+                    <div class="item-icon"><i class="fa-solid fa-microchip"></i></div>
+                    <div class="item-details">
+                        <h4>${item}</h4>
+                        <p>R$ ${preco.toLocaleString('pt-BR')}</p>
+                    </div>
+                </div>
+                <button class="btn-remove" onclick="removerItem(${index})" title="Remover item">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+        `;
+        lista.innerHTML += htmlItem;
+      });
+
+      // Atualizar Totais
+      const valorFormatado = total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+      subtotalElem.innerText = `R$ ${valorFormatado}`;
+      totalElem.innerText = `R$ ${valorFormatado}`;
+    }
+
+    function removerItem(index) {
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        carrinho.splice(index, 1); 
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        carregarCarrinho(); 
+    }
+
+    function limparCarrinho() {
+      if(confirm("Tem certeza que deseja esvaziar o carrinho?")) {
+          localStorage.removeItem('carrinho');
+          carregarCarrinho();
+      }
+    }
+
+    // Carregar ao abrir a página
+    carregarCarrinho();
+  </script>
+</body>
+</html>

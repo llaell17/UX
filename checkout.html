@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Pixel Forge</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Estilos base iguais aos anteriores */
+    :root { --primary: #ff002b; --bg-dark: #0f0f11; --bg-card: #18181b; --text-light: #f4f4f5; }
+    body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: var(--text-light); }
+    * { box-sizing: border-box; }
+
+    .checkout-container {
+        max-width: 1000px; margin: 40px auto; display: grid; grid-template-columns: 2fr 1fr; gap: 40px; padding: 20px;
+    }
+    
+    h2 { font-family: 'Montserrat'; margin-bottom: 20px; color: var(--primary); }
+    
+    .section-box {
+        background: var(--bg-card); padding: 30px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 20px;
+    }
+
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-size: 14px; color: #aaa; }
+    input, select {
+        width: 100%; padding: 12px; background: #0f0f11; border: 1px solid #333; color: #fff; border-radius: 6px; outline: none;
+    }
+    input:focus { border-color: var(--primary); }
+
+    .payment-option {
+        display: flex; align-items: center; gap: 10px; padding: 15px; border: 1px solid #333; border-radius: 8px; cursor: pointer; margin-bottom: 10px;
+    }
+    .payment-option.active { border-color: var(--primary); background: rgba(255,0,43,0.1); }
+
+    .btn-finish {
+        width: 100%; background: #00c851; color: #fff; padding: 15px; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s;
+    }
+    .btn-finish:hover { background: #00963c; }
+
+    @media (max-width: 768px) { .checkout-container { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+    <div class="checkout-container">
+        <div>
+            <h2><i class="fa-solid fa-truck-fast"></i> Entrega</h2>
+            <div class="section-box">
+                <div class="form-group">
+                    <label>CEP</label>
+                    <input type="text" placeholder="00000-000">
+                </div>
+                <div class="form-group">
+                    <label>Endereço Completo</label>
+                    <input type="text" placeholder="Rua, Número, Bairro">
+                </div>
+            </div>
+
+            <h2><i class="fa-regular fa-credit-card"></i> Pagamento</h2>
+            <div class="section-box">
+                <div class="payment-option active" onclick="selectPay(this)">
+                    <i class="fa-brands fa-pix" style="color: #00bfa5;"></i> PIX (Aprovação Imediata)
+                </div>
+                <div class="payment-option" onclick="selectPay(this)">
+                    <i class="fa-solid fa-credit-card"></i> Cartão de Crédito
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <label>Nome no Cartão</label>
+                    <input type="text" placeholder="Como impresso no cartão">
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <h2>Resumo</h2>
+            <div class="section-box">
+                <p style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>Produtos</span> <span id="resumo-total">R$ 0,00</span>
+                </p>
+                <p style="display: flex; justify-content: space-between; margin-bottom: 20px; color: #00c851;">
+                    <span>Frete</span> <span>Grátis</span>
+                </p>
+                <hr style="border: 0; border-top: 1px solid #333; margin-bottom: 20px;">
+                <button class="btn-finish" onclick="finalizar()">Pagar Agora</button>
+                <a href="carrinho.html" style="display: block; text-align: center; margin-top: 15px; color: #aaa; text-decoration: none;">Voltar ao Carrinho</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Seleção visual de pagamento
+        function selectPay(element) {
+            document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        // Simula valor vindo do carrinho
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        // Valor fixo de exemplo só pra ilustrar, num projeto real somaria o array
+        document.getElementById('resumo-total').innerText = carrinho.length > 0 ? "R$ " + (carrinho.length * 2000).toLocaleString() : "R$ 0,00";
+
+        function finalizar() {
+            alert("Pedido #9923 realizado com sucesso! Verifique seu email.");
+            localStorage.removeItem('carrinho');
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

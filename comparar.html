@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Forge vs Mercado | Comparativo</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* --- VARIÁVEIS E RESET --- */
+    :root {
+        --primary: #ff002b;
+        --bg-dark: #0f0f11;
+        --bg-card: #18181b;
+        --text-light: #f4f4f5;
+        --text-gray: #a1a1aa;
+        --success: #00c851;
+        --competitor: #2a2a2e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-dark);
+        color: var(--text-light);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* --- HEADER --- */
+    header {
+        background: rgba(15, 15, 17, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 15px 5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        box-shadow: 0 4px 30px rgba(0,0,0,0.5);
+    }
+
+    .brand {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 24px;
+        font-weight: 800;
+        color: #fff;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .brand span { color: var(--primary); }
+
+    nav { display: flex; gap: 30px; align-items: center; }
+    nav a {
+        color: var(--text-gray);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        transition: 0.3s;
+    }
+    nav a:hover, nav a.active { color: #fff; }
+
+    /* Badge Carrinho */
+    .cart-icon-wrapper { position: relative; }
+    .cart-count {
+        position: absolute;
+        top: -8px; right: -10px;
+        background: var(--primary);
+        color: white;
+        font-size: 10px; font-weight: bold;
+        padding: 2px 6px; border-radius: 50%;
+        display: none;
+    }
+
+    /* --- HERO --- */
+    .header-section {
+        text-align: center;
+        padding: 50px 20px 30px;
+    }
+
+    .header-section h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 32px;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+    }
+    .header-section p { color: var(--text-gray); }
+
+    /* --- TABELA --- */
+    .container {
+        max-width: 1400px; /* Aumentei um pouco para caber os comentários */
+        margin: 0 auto 60px;
+        padding: 0 20px;
+        flex-grow: 1;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+        border-radius: 16px;
+        border: 1px solid rgba(255,255,255,0.1);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--bg-card);
+        min-width: 1200px; /* Garante que não quebre em telas pequenas */
+    }
+
+    th {
+        background: #202024;
+        color: var(--text-gray);
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        font-size: 12px;
+        padding: 20px;
+        text-align: left;
+        border-bottom: 2px solid #333;
+    }
+
+    td {
+        padding: 15px 20px;
+        border-bottom: 1px solid rgba(255,255,255,0.05);
+        color: var(--text-light);
+        vertical-align: middle;
+        font-size: 14px;
+    }
+
+    .thumb-img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        background: rgba(0,0,0,0.3);
+        border-radius: 6px;
+        padding: 5px;
+        margin-right: 15px;
+        vertical-align: middle;
+    }
+
+    /* ESTILOS DAS LINHAS */
+    tr.pixel-forge {
+        background: rgba(255, 0, 43, 0.03);
+        border-left: 4px solid var(--primary);
+    }
+    
+    tr.competitor {
+        background: var(--competitor);
+        color: #888;
+        font-size: 13px;
+    }
+    tr.competitor td { opacity: 0.8; }
+    
+    tr.separator td {
+        padding: 0;
+        height: 10px;
+        background: var(--bg-dark);
+        border: none;
+    }
+
+    .product-name { font-weight: 700; color: #fff; font-size: 15px; }
+    tr.competitor .product-name { color: #aaa; font-weight: 400; }
+
+    .brand-tag {
+        font-size: 10px; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; font-weight: bold; margin-left: 5px;
+    }
+    .tag-pf { background: var(--primary); color: white; }
+    .tag-mkt { background: #444; color: #ccc; }
+
+    /* Estilo dos Comentários (Veredito) */
+    .review-box {
+        font-style: italic;
+        font-size: 13px;
+        line-height: 1.4;
+    }
+    .review-good { color: #fff; }
+    .review-good i { color: var(--success); margin-right: 5px; }
+    
+    .review-bad { color: #777; }
+    .review-bad i { color: #ff9800; margin-right: 5px; }
+
+    /* Barras de Progresso */
+    .progress-bg {
+        background: #333; width: 100%; height: 6px; border-radius: 10px; overflow: hidden; margin-top: 5px;
+    }
+    .progress-bar {
+        height: 100%; background: linear-gradient(90deg, var(--primary), #ff8fa3);
+        border-radius: 10px; width: 0%; animation: loadBar 1.5s ease-out forwards;
+    }
+    .bar-comp { background: #555; animation: loadBarComp 1.5s ease-out forwards; }
+
+    @keyframes loadBar { from { width: 0%; } to { width: var(--w); } }
+    @keyframes loadBarComp { from { width: 0%; } to { width: var(--w); } }
+
+    /* Botão */
+    .btn-buy {
+        background: transparent; border: 1px solid var(--primary); color: var(--primary);
+        padding: 6px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; text-transform: uppercase; transition: 0.3s;
+    }
+    .btn-buy:hover { background: var(--primary); color: #fff; box-shadow: 0 0 10px rgba(255,0,43,0.4); }
+
+    /* Footer */
+    footer {
+        text-align: center; padding: 30px; background: #0a0a0c; border-top: 1px solid #222; color: #555; font-size: 14px;
+    }
+
+    /* Toast */
+    #toast {
+        visibility: hidden; min-width: 250px; background-color: #18181b; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 1001; left: 50%; bottom: 30px; transform: translateX(-50%); border: 1px solid #333; border-left: 5px solid var(--success); box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    }
+    #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+    
+    @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+        <i class="fa-solid fa-microchip"></i> Pixel<span>Forge</span>
+    </div>
+    <nav>
+      <a href="index.html">Loja</a>
+      <a href="comparar.html" class="active">Comparar</a>
+      <a href="carrinho.html" class="cart-icon-wrapper">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-count" class="cart-count">0</span>
+      </a>
+    </nav>
+  </header>
+
+  <div class="header-section">
+      <h2>Pixel Forge <span style="color:#666; font-size: 24px;">VS</span> Mercado</h2>
+      <p>A prova definitiva de que você paga menos por mais performance.</p>
+  </div>
+
+  <div class="container">
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Modelo / Marca</th>
+                    <th>VRAM</th>
+                    <th>Preço</th>
+                    <th style="width: 25%;">Veredito dos Especialistas</th> <th style="width: 15%;">Performance</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr class="pixel-forge">
+                    <td>
+                        <img src="2.png" class="thumb-img" alt="GPU">
+                        <span class="product-name">PX 9090 Devil Gaming</span>
+                        <span class="brand-tag tag-pf">Nossa</span>
+                    </td>
+                    <td style="color: var(--primary); font-weight:bold;">32GB GDDR7</td>
+                    <td style="color: var(--primary); font-weight:800; font-size:16px;">R$ 12.500</td>
+                    <td>
+                        <div class="review-box review-good">
+                            <i class="fa-solid fa-quote-left"></i> "Simplesmente a placa mais rápida do mundo. O preço é irreal para o que ela entrega de poder bruto."
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bg"><div class="progress-bar" style="--w: 100%;"></div></div>
+                        <small style="color:var(--primary);">Imbatível</small>
+                    </td>
+                    <td><button class="btn-buy" onclick="adicionarCarrinho('PX 9090 Devil Gaming')">Comprar</button></td>
+                </tr>
+                <tr class="competitor">
+                    <td>
+                        <i class="fa-solid fa-microchip thumb-img" style="color:#555; display:inline-flex; align-items:center; justify-content:center;"></i>
+                        <span class="product-name">ASUS ROG Strix RTX 4090</span>
+                        <span class="brand-tag tag-mkt">Mercado</span>
+                    </td>
+                    <td>24GB GDDR6X</td>
+                    <td>R$ 15.999</td>
+                    <td>
+                        <div class="review-box review-bad">
+                            <i class="fa-solid fa-triangle-exclamation"></i> "Hardware excelente, mas custa R$ 3.000 a mais por menos VRAM. Paga-se apenas pela marca."
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bg"><div class="progress-bar bar-comp" style="--w: 92%;"></div></div>
+                    </td>
+                    <td>-</td>
+                </tr>
+                
+                <tr class="separator"><td colspan="6"></td></tr>
+
+                <tr class="pixel-forge">
+                    <td>
+                        <img src="Gemini_Generated_Image_7x9o937x9o937x9o.png" class="thumb-img" alt="GPU">
+                        <span class="product-name">PTX 4080 Super OC</span>
+                        <span class="brand-tag tag-pf">Nossa</span>
+                    </td>
+                    <td style="color: var(--primary); font-weight:bold;">16GB GDDR6X</td>
+                    <td style="color: #fff; font-weight:600;">R$ 3.270</td>
+                    <td>
+                        <div class="review-box review-good">
+                            <i class="fa-solid fa-quote-left"></i> "A rainha do 4K. Refrigeração silenciosa e clock estável acima da concorrência."
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bg"><div class="progress-bar" style="--w: 85%;"></div></div>
+                    </td>
+                    <td><button class="btn-buy" onclick="adicionarCarrinho('RTX 4080 Super OC')">Comprar</button></td>
+                </tr>
+                <tr class="competitor">
+                    <td>
+                        <i class="fa-solid fa-microchip thumb-img" style="color:#555; display:inline-flex; align-items:center; justify-content:center;"></i>
+                        <span class="product-name">MSI RTX 4080 Ventus</span>
+                        <span class="brand-tag tag-mkt">Mercado</span>
+                    </td>
+                    <td>16GB GDDR6X</td>
+                    <td>R$ 8.500</td>
+                    <td>
+                        <div class="review-box review-bad">
+                            <i class="fa-solid fa-triangle-exclamation"></i> "Preço inflacionado. Bom desempenho, mas construção em plástico deixa a desejar."
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bg"><div class="progress-bar bar-comp" style="--w: 82%;"></div></div>
+                    </td>
+                    <td>-</td>
+                </tr>
+
+                <tr class="separator"><td colspan="6"></td></tr>
+
+                <tr class="pixel-forge">
+                    <td>
+                        <img src="2.png" class="thumb-img" alt="GPU">
+                        <span class="product-name">PTX 7900 XT Edition</span>
+                        <span class="brand-tag tag-pf">Nossa</span>
+                    </td>
+                    <td style="color: var(--primary); font-weight:bold;">20GB GDDR6</td>
+                    <td style="color: #fff; font-weight:600;">R$ 2.499</td>
+                    <td>
+                        <div class="review-box review-good">
+                            <i class="fa-solid fa-quote-left"></i> "Custo-benefício insano para Rasterização. Bate de frente com placas de R$ 6 mil."
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bg"><div class="progress-bar" style="--w: 75%;"></div></div>
+                    </td>
+                    <td><button class="btn-buy" onclick="adicionarCarrinho('RX 7900 XT Edition')">Comprar</button></td>
+                </tr>
+                <tr class="competitor">
+                    <td>
+                        <i class="fa-solid fa-microchip thumb-img" style="color:#555; display:inline-flex; align-items:center; justify-content:center;"></i>
+                        <span class="product-name">Sapphire Radeon 7900 XT</span>
+                        <span class="brand-tag tag-mkt">Mercado</span>
+                    </td>
+                    <td>20GB GDDR6</td>
+                    <td>R$ 6.200</td>
+                    <td>
+                        <div class="review-box review-bad">
+                            <i class="fa-solid fa-triangle-exclamation"></i> "Boa placa, mas difícil de achar e o suporte de drivers é inferior ao da Pixel Forge."
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bg"><div class="progress-bar bar-comp" style="--w: 75%;"></div></div>
+                    </td>
+                    <td>-</td>
+                </tr>
+
+                <tr class="separator"><td colspan="6"></td></tr>
+
+                <tr class="pixel-forge">
+                    <td>
+                        <img src="a a.png" class="thumb-img" alt="GPU">
+                        <span class="product-name">PTX 1660 Super</span>
+                        <span class="brand-tag tag-pf">Nossa</span>
+                    </td>
+                    <td style="color: var(--primary); font-weight:bold;">6GB GDDR5</td>
+                    <td style="color: #fff; font-weight:600;">R$ 1.450</td>
+                    <td>
+                        <div class="review-box review-good">
+                            <i class="fa-solid fa-quote-left"></i> "A única opção viável para 1080p sem vender um rim. Roda tudo no médio/alto."
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bg"><div class="progress-bar" style="--w: 40%;"></div></div>
+                    </td>
+                    <td><button class="btn-buy" onclick="adicionarCarrinho('GTX 1660 Super')">Comprar</button></td>
+                </tr>
+                <tr class="competitor">
+                    <td>
+                        <i class="fa-solid fa-microchip thumb-img" style="color:#555; display:inline-flex; align-items:center; justify-content:center;"></i>
+                        <span class="product-name">Gigabyte GTX 1660</span>
+                        <span class="brand-tag tag-mkt">Mercado</span>
+                    </td>
+                    <td>6GB GDDR5</td>
+                    <td>R$ 1.650</td>
+                    <td>
+                        <div class="review-box review-bad">
+                            <i class="fa-solid fa-triangle-exclamation"></i> "Tecnologia antiga com preço de nova. Esquece bastante em gabinetes pequenos."
+                        </div>
+                    </td>
+                    <td>
+                        <div class="progress-bg"><div class="progress-bar bar-comp" style="--w: 38%;"></div></div>
+                    </td>
+                    <td>-</td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2024 Pixel Forge Hardware. Projeto de UX Design.
+  </footer>
+
+  <div id="toast">Produto adicionado ao carrinho!</div>
+
+  <script>
+    // Inicializa contador
+    document.addEventListener("DOMContentLoaded", function() {
+        atualizarContador();
+    });
+
+    function adicionarCarrinho(produto) {
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        carrinho.push(produto);
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        
+        mostrarToast(produto);
+        atualizarContador();
+    }
+
+    function atualizarContador() {
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        const badge = document.getElementById('cart-count');
+        
+        if (carrinho.length > 0) {
+            badge.style.display = 'inline-block';
+            badge.innerText = carrinho.length;
+        } else {
+            badge.style.display = 'none';
+        }
+    }
+
+    function mostrarToast(nomeProduto) {
+      var x = document.getElementById("toast");
+      x.innerText = "✅ " + nomeProduto + " adicionado!";
+      x.className = "show";
+      setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+  </script>
+</body>
+</html>

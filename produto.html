@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PX 9090 Devil Gaming | Pixel Forge</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+        --primary: #ff002b;
+        --bg-dark: #0f0f11;
+        --bg-card: #18181b;
+        --text-light: #f4f4f5;
+        --text-gray: #a1a1aa;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { font-family: 'Poppins', sans-serif; background: var(--bg-dark); color: var(--text-light); }
+    
+    /* Header (Padrão) */
+    header { background: rgba(15,15,17,0.95); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .brand { font-family: 'Montserrat'; font-weight: 800; color: #fff; font-size: 24px; } .brand span { color: var(--primary); }
+    nav a { color: var(--text-gray); text-decoration: none; margin-left: 20px; font-weight: 600; transition: 0.3s; }
+    nav a:hover { color: #fff; }
+
+    /* Breadcrumb (Navegação) */
+    .breadcrumb { padding: 20px 5%; color: var(--text-gray); font-size: 14px; }
+    .breadcrumb span { color: var(--primary); }
+
+    
+    .product-container {
+        max-width: 1200px;
+        margin: 0 auto 60px;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr; 
+        gap: 60px;
+        align-items: center;
+    }
+
+    .product-image {
+        background: radial-gradient(circle at center, rgba(255, 0, 43, 0.1), var(--bg-card));
+        border-radius: 20px;
+        padding: 50px;
+        border: 1px solid rgba(255,255,255,0.1);
+        text-align: center;
+        box-shadow: 0 0 50px rgba(255, 0, 43, 0.15);
+        position: relative;
+    }
+    
+    /* Etiqueta de Lançamento */
+    .badge-new {
+        position: absolute; top: 20px; left: 20px;
+        background: var(--primary); color: #fff; padding: 5px 15px;
+        border-radius: 50px; font-weight: bold; font-size: 12px; letter-spacing: 1px;
+    }
+
+    .product-image img { width: 100%; filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8)); transition: 0.5s; }
+    .product-image:hover img { transform: scale(1.05) rotate(-2deg); }
+
+    
+    .product-info h1 { font-family: 'Montserrat'; font-size: 42px; margin-bottom: 10px; line-height: 1.1; text-transform: uppercase; font-weight: 800; }
+    .product-info h1 span { color: var(--primary); }
+    
+    .rating { color: gold; font-size: 14px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;}
+    
+    .price { font-size: 38px; color: #fff; font-weight: 700; margin-bottom: 10px; }
+    .price small { font-size: 16px; color: var(--text-gray); font-weight: 400; }
+
+    .desc { color: var(--text-gray); line-height: 1.6; margin-bottom: 30px; border-left: 3px solid var(--primary); padding-left: 15px; }
+
+    
+    .specs-grid {
+        display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;
+    }
+    .spec-item {
+        background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 13px;
+    }
+    .spec-item i { color: var(--primary); font-size: 16px; }
+
+    
+    .stock-warning { color: #ff9800; font-size: 13px; margin-bottom: 10px; font-weight: bold; display: flex; align-items: center; gap: 5px;}
+    
+    .btn-add {
+        background: var(--primary); color: #fff; border: none; padding: 18px 40px;
+        font-size: 18px; font-weight: 800; border-radius: 8px; cursor: pointer;
+        transition: 0.3s; width: 100%; text-transform: uppercase; letter-spacing: 1px;
+        display: flex; justify-content: center; align-items: center; gap: 10px;
+    }
+    .btn-add:hover { background: #d40000; box-shadow: 0 0 30px rgba(255,0,43,0.5); transform: translateY(-2px); }
+
+    /* Footer (Simples) */
+    footer { text-align: center; padding: 30px; background: #0a0a0c; color: #555; border-top: 1px solid #222; margin-top: 50px; }
+
+    @media (max-width: 768px) { .product-container { grid-template-columns: 1fr; gap: 30px; } .product-info h1 { font-size: 32px; } }
+  </style>
+</head>
+<body>
+  
+  <header>
+    <div class="brand"><i class="fa-solid fa-microchip"></i> Pixel<span>Forge</span></div>
+    <nav> <a href="index.html">Voltar</a> <a href="carrinho.html">Carrinho</a> </nav>
+  </header>
+
+  <div class="breadcrumb">
+      Loja / GPUs High-End / <span>PX 9090 Devil</span>
+  </div>
+
+  <div class="product-container">
+    <div class="product-image">
+        <span class="badge-new">LANÇAMENTO</span>
+        <img src="2.png" alt="PX 9090 Devil Gaming">
+    </div>
+
+    <div class="product-info">
+        <div class="rating">
+            <div><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+            <span style="color: #666;">(A melhor avaliada)</span>
+        </div>
+
+        <h1>PX 9090 <span>Devil Gaming</span></h1>
+        
+        <p class="price">R$ 12.500,00 <small>à vista</small></p>
+        
+        <p class="desc">
+            A placa definitiva para quem não aceita limites. Arquitetura "Hellfire" de última geração, resfriamento triplo e RGB customizável. Rode tudo no Ultra em 8K.
+        </p>
+        
+        <div class="specs-grid">
+            <div class="spec-item"><i class="fa-solid fa-memory"></i> 32GB GDDR7 VRAM</div>
+            <div class="spec-item"><i class="fa-solid fa-microchip"></i> Clock Boost 3.1 GHz</div>
+            <div class="spec-item"><i class="fa-solid fa-wind"></i> Triple Fan Inferno</div>
+            <div class="spec-item"><i class="fa-solid fa-bolt"></i> 600W TDP</div>
+        </div>
+
+        <div class="stock-warning">
+            <i class="fa-solid fa-triangle-exclamation"></i> Alta demanda! Restam apenas 3 unidades.
+        </div>
+
+        <button class="btn-add" onclick="comprar()">
+            <i class="fa-solid fa-cart-plus"></i> Comprar Agora
+        </button>
+    </div>
+  </div>
+
+  <footer>
+      &copy; 2024 Pixel Forge Hardware. Projeto UX Design.
+  </footer>
+
+  <script>
+    function comprar() {
+        
+        let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+        
+        
+        carrinho.push("PX 9090 Devil Gaming");
+        
+        
+        localStorage.setItem('carrinho', JSON.stringify(carrinho));
+        
+        
+        window.location.href = "carrinho.html";
+    }
+  </script>
+</body>
+</html>

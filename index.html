@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Forge | Hardware de Elite</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- VARIÁVEIS E RESET --- */
+        :root {
+            --primary: #ff002b; /* Vermelho Neon */
+            --primary-dark: #b3001e;
+            --bg-dark: #0f0f11;
+            --bg-card: #18181b;
+            --text-light: #f4f4f5;
+            --text-gray: #a1a1aa;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glow: 0 0 20px rgba(255, 0, 43, 0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER MODERNO --- */
+        header {
+            background: rgba(15, 15, 17, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .brand span { color: var(--primary); }
+
+        nav { display: flex; gap: 30px; align-items: center; }
+
+        nav a {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        nav a:hover, nav a.active { color: #fff; }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after { width: 100%; }
+
+        /* Badge do Carrinho */
+        .cart-icon-wrapper { position: relative; }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: var(--primary);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 50%;
+            display: none;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        /* --- HERO SECTION (BANNER) --- */
+        .hero {
+            height: 400px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-dark)), url('https://images.unsplash.com/photo-1591488320449-011701bb6704?q=80&w=2070&auto=format&fit=crop'); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            margin-bottom: 10px;
+        }
+        
+        .hero p { color: #ddd; font-size: 18px; max-width: 600px; }
+
+        /* --- FILTRO DE BUSCA --- */
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: -30px auto 50px; /* Sobe por cima do banner */
+            padding: 0 20px;
+        }
+
+        .search-box {
+            background: #27272a;
+            border: 1px solid #3f3f46;
+            border-radius: 50px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: 0.3s;
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: var(--glow);
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            width: 100%;
+            margin-left: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        /* --- GRID DE PRODUTOS --- */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+        }
+
+        .section-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 28px;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--primary);
+            padding-left: 15px;
+        }
+
+        .models {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* --- CARDS (GLASSMORPHISM) --- */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+
+        /* Efeito de brilho no hover */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: 0.5s;
+        }
+        .card:hover::before { left: 100%; }
+
+        /* --- ESTILO DE IMAGEM CORRIGIDO --- */
+        .image-container {
+            height: 200px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            padding: 10px;
+            overflow: hidden; /* Corta o que sobrar */
+        }
+
+        /* Garante que o link ocupe todo o espaço */
+        .image-container a {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             width: 100%;
+             height: 100%;
+        }
+
+        .card img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; /* Encaixa a imagem sem distorcer */
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.6));
+            transition: 0.3s;
+        }
+        
+        .card:hover img { transform: scale(1.08); }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        /* Links dentro dos cards */
+        .card a { text-decoration: none; color: inherit; display: block; }
+
+        .tags {
+            font-size: 11px;
+            color: var(--primary);
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .card p {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 20px;
+            flex-grow: 1;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+        }
+        .price small { font-size: 12px; font-weight: 400; color: var(--text-gray); display: block;}
+
+        .btn-buy {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .btn-buy:hover {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 0 15px var(--primary);
+            transform: scale(1.1);
+        }
+
+        .btn-buy:active { transform: scale(0.95); }
+
+        /* --- RODAPÉ --- */
+        footer {
+            background: #0a0a0c;
+            padding: 60px 20px 20px;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+        
+        footer p { color: #555; font-size: 14px; }
+
+        /* --- TOAST NOTIFICATION --- */
+        #toast {
+            visibility: hidden;
+            min-width: 300px;
+            background-color: #18181b;
+            color: #fff;
+            text-align: left;
+            border-radius: 12px;
+            padding: 20px;
+            position: fixed;
+            z-index: 2000;
+            right: 30px;
+            bottom: 30px;
+            border: 1px solid #333;
+            border-left: 5px solid #00c851; /* Verde Sucesso */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateY(100px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #toast.show {
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        #toast i { font-size: 24px; color: #00c851; }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .hero h2 { font-size: 32px; }
+            header { flex-direction: column; gap: 15px; }
+            nav { gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand">
+            <i class="fa-solid fa-microchip"></i> Pixel<span>Forge</span>
+        </div>
+        <nav>
+            <a href="index.html" class="active">Loja</a>
+            <a href="comparar.html">Comparar</a>
+            <a href="carrinho.html" class="cart-icon-wrapper">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span id="cart-count" class="cart-count">0</span>
+            </a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h2>POTÊNCIA ABSOLUTA</h2>
+        <p>As melhores GPUs para renderização e games 4K em um só lugar.</p>
+    </section>
+
+    <div class="search-container">
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass" style="color: #666;"></i>
+            <input type="text" id="pesquisa" placeholder="Qual GPU você procura?" onkeyup="filtrarProdutos()">
+        </div>
+    </div>
+
+    <main class="container">
+        <h3 class="section-title">Destaques da Semana</h3>
+        
+        <div class="models" id="listaModelos">
+            
+            <div class="card" data-nome="PX 9090 Devil Gaming">
+                <div class="image-container">
+                    <a href="produto.html">
+                        <img src="2.png" alt="PX 9090 Devil">
+                    </a>
+                </div>
+                <div class="tags">LANÇAMENTO EXCLUSIVO</div>
+                
+                <h3><a href="produto.html">PX 9090 Devil Gaming</a></h3>
+                
+                <p>A placa mais rápida do mundo. Arquitetura Hellfire e 32GB VRAM.</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <small>À vista</small>
+                        R$ 12.500
+                    </div>
+                    <button class="btn-buy" onclick="adicionarCarrinho('PX 9090 Devil Gaming')" aria-label="Comprar">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card" data-nome="Pixel Forge RX 7900 XT">
+                <div class="image-container">
+                    <img src="2.png" alt="RX 7900 XT">
+                </div>
+                <div class="tags">Pixel Forge</div>
+                <h3>PTX 7900 XT Edition</h3>
+                <p>20GB GDDR6, Ray Tracing avançado e arquitetura RDNA 3.</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <small>À vista</small>
+                        R$ 2.499
+                    </div>
+                    <button class="btn-buy" onclick="adicionarCarrinho('RX 7900 XT Edition')" aria-label="Comprar">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card" data-nome="Pixel Forge RTX 4080">
+                <div class="image-container">
+                    <img src="Gemini_Generated_Image_7x9o937x9o937x9o.png" alt="RTX 4080">
+                </div>
+                <div class="tags">Pixel Forge</div>
+                <h3>PTX 4080 Super OC</h3>
+                <p>Desempenho monstruoso para 4K, DLSS 3.0 e Frame Gen.</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <small>À vista</small>
+                        R$ 3.270
+                    </div>
+                    <button class="btn-buy" onclick="adicionarCarrinho('RTX 4080 Super OC')" aria-label="Comprar">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card" data-nome="Pixel Forge GTX 1660">
+                <div class="image-container">
+                    <img src="a a.png" alt="GTX 1660">
+                </div>
+                <div class="tags">CUSTO BENEFÍCIO</div>
+                <h3>PTX 1660 Super</h3>
+                <p>A rainha do 1080p. Compacta, fria e eficiente.</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <small>À vista</small>
+                        R$ 1.450
+                    </div>
+                    <button class="btn-buy" onclick="adicionarCarrinho('GTX 1660 Super')" aria-label="Comprar">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card" data-nome="Pixel Forge RTX 4070 Ti">
+                <div class="image-container">
+                    <img src="vermelho.png" alt="RTX 4070 Ti">
+                </div>
+                <div class="tags">Pixel Forge</div>
+                <h3>PTX 4070 Ti Elite</h3>
+                <p>O equilíbrio perfeito para Quad HD com altas taxas de FPS.</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <small>À vista</small>
+                        R$ 4.290
+                    </div>
+                    <button class="btn-buy" onclick="adicionarCarrinho('RTX 4070 Ti Elite')" aria-label="Comprar">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card" data-nome="Pixel Forge RTX 3060">
+                <div class="image-container">
+                    <img src="34.png" alt="RTX 3060">
+                </div>
+                <div class="tags">Pixel Forge</div>
+                <h3>PX 3080 12GB V7</h3>
+                <p>A favorita dos gamers. 12GB de VRAM e DLSS para rodar tudo.</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <small>À vista</small>
+                        R$ 1.899
+                    </div>
+                    <button class="btn-buy" onclick="adicionarCarrinho('RTX 3060 12GB')" aria-label="Comprar">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="card" data-nome="Pixel Forge RX 7700 XT">
+                <div class="image-container">
+                    <img src="Gemini_Generated_Image_7mk4107mk4107mk4.png" alt="RX 7700 XT">
+                </div>
+                <div class="tags">Maior Performance</div>
+                <h3>RX 7700 XT Gaming</h3>
+                <p>Dominando o Quad HD com performance bruta e alto FPS.</p>
+                <div class="card-footer">
+                    <div class="price">
+                        <small>À vista</small>
+                        R$ 7.150
+                    </div>
+                    <button class="btn-buy" onclick="adicionarCarrinho('RX 7700 XT Gaming')" aria-label="Comprar">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="text-align: center; margin-top: 60px;">
+            <a href="comparar.html" style="text-decoration: none;">
+                <button style="padding: 15px 30px; background: #333; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'Poppins'; font-weight: 600; transition: 0.3s;">
+                    <i class="fa-solid fa-scale-balanced"></i> Comparar Modelos
+                </button>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="brand" style="justify-content: center; margin-bottom: 20px; font-size: 18px;">
+            <i class="fa-solid fa-microchip"></i> Pixel<span>Forge</span>
+        </div>
+        <p>&copy; 2024 Pixel Forge Hardware. Projeto de UX Design.</p>
+    </footer>
+
+    <div id="toast">
+        <i class="fa-regular fa-circle-check"></i>
+        <div>
+            <strong style="display: block; margin-bottom: 2px;">Sucesso!</strong>
+            <span id="toast-msg">Produto adicionado ao carrinho.</span>
+        </div>
+    </div>
+
+    <script>
+        // Inicializa o contador ao carregar a página
+        document.addEventListener("DOMContentLoaded", function() {
+            atualizarContador();
+        });
+
+        function adicionarCarrinho(produto) {
+            // Lógica de dados (Backend simulado)
+            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+            carrinho.push(produto);
+            localStorage.setItem('carrinho', JSON.stringify(carrinho));
+
+            // Feedback Visual (UX)
+            mostrarToast(produto);
+            atualizarContador();
+        }
+
+        function atualizarContador() {
+            let carrinho = JSON.parse(localStorage.getItem('carrinho')) || [];
+            const badge = document.getElementById('cart-count');
+            
+            if (carrinho.length > 0) {
+                badge.style.display = 'inline-block';
+                badge.innerText = carrinho.length;
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function mostrarToast(nomeProduto) {
+            const toast = document.getElementById("toast");
+            const msg = document.getElementById("toast-msg");
+            
+            msg.innerText = nomeProduto + " foi adicionado.";
+            toast.classList.add("show");
+            
+            // Remove a classe após 3 segundos
+            setTimeout(function(){ 
+                toast.classList.remove("show"); 
+            }, 3500);
+        }
+
+        function filtrarProdutos() {
+            const pesquisa = document.getElementById('pesquisa').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                const nome = card.getAttribute('data-nome').toLowerCase();
+                const titulo = card.querySelector('h3').innerText.toLowerCase();
+                
+                if (nome.includes(pesquisa) || titulo.includes(pesquisa)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
